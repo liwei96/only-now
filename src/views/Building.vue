@@ -942,6 +942,7 @@ export default {
           },
         ],
       };
+      console.log(that.prices)
       myChart.setOption(options);
     },
     drawlei() {
