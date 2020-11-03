@@ -1,7 +1,5 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-// import Home from '../views/Home.vue'
-import Building from '../views/Building.vue'
 
 Vue.use(VueRouter)
 
@@ -13,7 +11,7 @@ Vue.use(VueRouter)
   {
     path: '/index/:id',
     name: 'mindex',
-    component: Building
+    component: () => import('../views/Building.vue')
   },
   {
     path: '/rule/:id',

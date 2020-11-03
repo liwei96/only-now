@@ -1,6 +1,21 @@
 import axios from 'axios'
 
-
+axios.interceptors.request.use(function (config) {
+  // 处理请求之前的配置
+  if(config.method == 'get'){
+    config.params.uuid = localStorage.getItem('uuid')
+  }else{
+    if(config.data){
+      config.data.uuid = localStorage.getItem('uuid')
+    }else{
+      config.params.uuid = localStorage.getItem('uuid')
+    }
+  }
+  return config
+}, function (error) {
+  // 请求失败的处理
+  return Promise.reject(error)
+})
 export const get = (id,other) => {
     return axios.request({
         method:'get',

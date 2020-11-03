@@ -8,7 +8,7 @@
     <div class="topimg">
       <div class="swiper-topimg">
         <div class="swiper-wrapper">
-          <div class="swiper-slide" v-for="(item,key) in topimgs" :key="key">
+          <div class="swiper-slide" v-for="(item, key) in topimgs" :key="key">
             <img :src="item" alt />
           </div>
         </div>
@@ -18,46 +18,52 @@
       <div class="zhe"></div>
       <div class="top-msg">
         <div class="swiper-wrapper">
-          <div class="swiper-slide" v-for="(item,key) in all.customers" :key="key">
+          <div
+            class="swiper-slide"
+            v-for="(item, key) in all.customers"
+            :key="key"
+          >
             <img src="../assets/talk.png" alt />
-            <span>{{item.mobile}}</span>
-            <span>{{item.operate}}</span>
-            <span>{{item.min}}分钟前</span>
+            <span>{{ item.mobile }}</span>
+            <span>{{ item.operate }}</span>
+            <span>{{ item.min }}分钟前</span>
           </div>
         </div>
       </div>
       <!-- <p class="imgnum">共{{img_num}}张</p> -->
       <div class="taps">
         <p
-          v-for="(item,key) in imgmsg"
+          v-for="(item, key) in imgmsg"
           :key="key"
-          :class="imgmsgnum == key ? 'active':''"
+          :class="imgmsgnum == key ? 'active' : ''"
           @click="setimgmsgnum(key)"
-        >{{item}}</p>
+        >
+          {{ item }}
+        </p>
       </div>
     </div>
     <div class="all">
       <div class="incro">
         <div class="top">
-          <h3>{{basic.name}}</h3>
+          <h3>{{ basic.name }}</h3>
           <p>
-            <span class="isshou">{{basic.status}}</span>
-            <span class="zhuangxiu">{{basic.decorate}}</span>
-            <span class="rail">{{basic.feature}}</span>
+            <span class="isshou">{{ basic.status }}</span>
+            <span class="zhuangxiu">{{ basic.decorate }}</span>
+            <span class="rail">{{ basic.feature }}</span>
             <span class="hui">限时优惠</span>
           </p>
         </div>
-        <p class="address">地址：{{basic.saler_address}}</p>
+        <p class="address">地址：{{ basic.saler_address }}</p>
         <div class="top-msg">
           <p class="msg-con">专享看房团，专享参团优惠</p>
-          <p class="msg-btn" @click="showbtn(84,'一键咨询')">
+          <p class="msg-btn" @click="showbtn(84, '一键咨询')">
             一键咨询
             <img src="../assets/righticon.png" alt />
           </p>
         </div>
         <h5>
           今日房源
-          <span>{{hour}}小时前更新</span>
+          <span>{{ hour }}小时前更新</span>
         </h5>
         <!-- <div class="prices">
           <div class="price">
@@ -83,19 +89,24 @@
           </div>
         </div>-->
         <ul class="huprice">
-          <li class="one" v-for="(item,key) in humsgs" :key="key">
-            <p>{{item.title}}</p>
-            <p>{{item.area}}m²</p>
+          <li class="one" v-for="(item, key) in humsgs" :key="key">
+            <p>{{ item.title }}</p>
+            <p>{{ item.area }}m²</p>
             <p>
-              约{{Number(item.total).toFixed(0)}}万(
-              <span>{{item.single}}元/m²</span>)
+              约{{ Number(item.total).toFixed(0) }}万(
+              <span>{{ item.single }}元/m²</span>)
             </p>
             <button @click="lookhu(item.id)">户型图</button>
           </li>
         </ul>
         <p class="zhu">注：以上价格为开发商报价，可联系咨询师咨询最低价</p>
         <div class="btns">
-          <input id="searchprice" v-model="baoming" type="text" placeholder="输入手机号码查询底价" />
+          <input
+            id="searchprice"
+            v-model="baoming"
+            type="text"
+            placeholder="输入手机号码查询底价"
+          />
           <button @click="showother(34)">查底价</button>
         </div>
       </div>
@@ -149,12 +160,12 @@
           </div>
         </div>
       </div>-->
-      <div class="te" v-if="info.length!=0">
+      <div class="te" v-if="info.length != 0">
         <h3>
           今日特价房
-          <span>{{hour}}小时前更新</span>
+          <span>{{ hour }}小时前更新</span>
         </h3>
-        <span class="teprice">{{max}}</span>
+        <span class="teprice">{{ max > 0 ? max : "****" }}</span>
         <img src="../assets/tit.png" alt class="te-tit" />
         <div class="tabs">
           <table border>
@@ -178,18 +189,22 @@
                 <th>立减(元)</th>
               </tr>
             </thead>
-            <tr v-for="(item,key) in info" :key="key">
-              <td>{{item.number}}</td>
-              <td>{{Number(item.area)}}</td>
-              <td>{{item.original_single}}</td>
-              <td v-if="key<=3">{{item.original_total}}</td>
-              <td v-if="key>3">***</td>
-              <td v-if="key<=2">{{item.single}}</td>
-              <td v-if="key>2">***</td>
-              <td v-if="key<=1">{{item.total}}</td>
-              <td v-if="key>1">***</td>
-              <td v-if="key==0">{{item.diff}}</td>
-              <td v-if="key!=0">***</td>
+            <tr v-for="(item, key) in info" :key="key">
+              <td>{{ item.number }}</td>
+              <td>{{ Number(item.area) }}</td>
+              <td>{{ item.original_single > item.single ? item.original_single : "****" }}</td>
+              <td v-if="key <= 3">{{ item.original_total > item.total ? item.original_total : "****" }}</td>
+              <td v-if="key > 3">***</td>
+              <td v-if="key <= 2">
+                {{ item.original_single > item.single ? item.single : "****" }}
+              </td>
+              <td v-if="key > 2">***</td>
+              <td v-if="key <= 1">
+                {{ item.original_total > item.total ? item.total : "****" }}
+              </td>
+              <td v-if="key > 1">***</td>
+              <td v-if="key == 0">{{ item.diff > 0 ? item.diff : "****" }}</td>
+              <td v-if="key != 0">***</td>
             </tr>
           </table>
           <button @click="showbox(85)">咨询特价房</button>
@@ -208,7 +223,7 @@
           <button @click="showbox(85)">咨询特价房</button>
         </div>
       </div>
-      <div class="line" v-if="info.length!=0"></div>
+      <div class="line" v-if="info.length != 0"></div>
       <div class="hui">
         <h3>
           优惠信息
@@ -216,34 +231,34 @@
             <img src="../assets/ques.png" alt /> 活动规则
           </span>
         </h3>
-        <div class="hui-con" @click="showbtn(37,'领取优惠')">
+        <div class="hui-con" @click="showbtn(37, '领取优惠')">
           <div class="hui-left">
             <h6>
               最高
               <span>5000</span>元购房优惠
-              <i>（{{endline}}截止）</i>
+              <i>（{{ endline }}截止）</i>
             </h6>
             <p>售楼处专供家园平台客户</p>
           </div>
           <div class="hui-right">
-            <button @click="showbtn(37,'领取优惠')">领取优惠</button>
+            <button @click="showbtn(37, '领取优惠')">领取优惠</button>
             <p>
-              <span>{{huinum}}人</span>已领取
+              <span>{{ huinum }}人</span>已领取
             </p>
           </div>
         </div>
-        <div class="hui-con two" @click="showbtn(86,'免费领取')">
+        <div class="hui-con two" @click="showbtn(86, '免费领取')">
           <div class="hui-left">
             <h6>
               免费看房专车券
-              <i>（剩余{{num}}张）</i>
+              <i>（剩余{{ num }}张）</i>
             </h6>
             <p>免费专车1对1服务限时劵</p>
           </div>
           <div class="hui-right">
-            <button @click="showbtn(86,'免费领取')">免费领取</button>
+            <button @click="showbtn(86, '免费领取')">免费领取</button>
             <p>
-              <span>{{huinum1}}人</span>已领取
+              <span>{{ huinum1 }}人</span>已领取
             </p>
           </div>
         </div>
@@ -254,13 +269,13 @@
           最新消息
           <i>最新</i>
         </h3>
-        <p class="new-msg">{{dynamics.content}}</p>
-        <p class="new-time">{{dynamics.time}}</p>
+        <p class="new-msg">{{ dynamics.content }}</p>
+        <p class="new-time">{{ dynamics.time }}</p>
         <div class="new-btn">
-          <p @click="showbtn(38,'变价通知')">
+          <p @click="showbtn(38, '变价通知')">
             <img src="../assets/zhexian.png" />变价通知我
           </p>
-          <p @click="showbtn(39,'开盘提醒')">
+          <p @click="showbtn(39, '开盘提醒')">
             <img src="../assets/msg.png" />开盘提醒我
           </p>
         </div>
@@ -269,22 +284,22 @@
       <div class="ziliao">
         <h3>楼盘分析资料</h3>
         <div class="tab">
-          <p :class="tabnum ==1?'active':''" @click="tabnum = 1">
+          <p :class="tabnum == 1 ? 'active' : ''" @click="tabnum = 1">
             投资分析
             <span></span>
           </p>
-          <p @click="tabnum = 2" :class="tabnum == 2?'active':''">
+          <p @click="tabnum = 2" :class="tabnum == 2 ? 'active' : ''">
             宜居分析
             <span></span>
           </p>
         </div>
         <div class="liao-msg" v-if="tabnum == 1">
-          <p v-for="(item,val) in tou" :key="val">{{item.content}}</p>
+          <p v-for="(item, val) in tou" :key="val">{{ item.content }}</p>
         </div>
         <div class="liao-msg" v-if="tabnum == 2">
-          <p v-for="(item,val) in ju" :key="val">{{item.content}}</p>
+          <p v-for="(item, val) in ju" :key="val">{{ item.content }}</p>
         </div>
-        <button @click="showbtn(41,'领取分析资料')">
+        <button @click="showbtn(41, '领取分析资料')">
           <img src="../assets/ziliao.png" />领取分析资料
         </button>
       </div>
@@ -294,10 +309,11 @@
           最新成交价
           <p>
             已有
-            <span>{{searchnum}}</span>人查询
+            <span>{{ searchnum }}</span
+            >人查询
           </p>
         </h3>
-        <div id="chart" style="width:100%;height:200px"></div>
+        <div id="chart" style="width: 100%; height: 200px"></div>
         <p>2020年</p>
         <div class="tab">
           <table>
@@ -307,9 +323,9 @@
                 <th>成交套数</th>
                 <th>成交金额</th>
               </tr>
-              <tr v-for="(dd,key) in chengjiao" :key="key">
-                <td>{{dd.date}}</td>
-                <td>{{dd.num}}套</td>
+              <tr v-for="(dd, key) in chengjiao" :key="key">
+                <td>{{ dd.date }}</td>
+                <td>{{ dd.num }}套</td>
                 <td>***万</td>
               </tr>
             </tbody>
@@ -318,69 +334,49 @@
             <img src="../assets/huo-down.png" alt />
           </div>
         </div>
-        <button @click="showbtn(40,'获取最新成交价')">
+        <button @click="showbtn(40, '获取最新成交价')">
           <img src="../assets/geticon.png" />获取最新成交价
         </button>
       </div>
       <div class="line"></div>
 
       <div class="zixun">
-        <h3>
-          <span>VIP</span>服务
-        </h3>
+        <h3><span>VIP</span>服务</h3>
         <p class="xun-icon">
-          <span>
-            <img src="../assets/save.png" alt />专业服务
-          </span>
-          <span>
-            <img src="../assets/icon-path.png" alt />区域解读
-          </span>
-          <span>
-            <img src="../assets/icon-pin.png" alt />户型分析
-          </span>
+          <span> <img src="../assets/save.png" alt />专业服务 </span>
+          <span> <img src="../assets/icon-path.png" alt />区域解读 </span>
+          <span> <img src="../assets/icon-pin.png" alt />户型分析 </span>
         </p>
-        <div class="peo" v-for="(item,key) in staffs" :key="key">
+        <div class="peo" v-for="(item, key) in staffs" :key="key">
           <img :src="item.head_img" alt />
           <div class="peo-msg">
             <h6>
-              {{item.name}}
+              {{ item.name }}
               <span>满意度5分</span>
             </h6>
             <div class="peo-type-one" v-if="key == 0">
               <span class="type">服务</span>
               <p>
-                <span>
-                  <i>1.</i>楼盘户型介绍
-                </span>
-                <span>
-                  <i>2.</i>近期活动介绍
-                </span>
+                <span> <i>1.</i>楼盘户型介绍 </span>
+                <span> <i>2.</i>近期活动介绍 </span>
               </p>
             </div>
             <div class="peo-type-one two" v-if="key == 1">
               <span class="type">服务</span>
               <p>
-                <span>
-                  <i>1.</i>提供优惠折扣
-                </span>
-                <span>
-                  <i>2.</i>剩余房源介绍
-                </span>
+                <span> <i>1.</i>提供优惠折扣 </span>
+                <span> <i>2.</i>剩余房源介绍 </span>
               </p>
             </div>
             <div class="peo-type-one three" v-if="key == 2">
               <span class="type">服务</span>
               <p>
-                <span>
-                  <i>1.</i>特价房申请
-                </span>
-                <span>
-                  <i>2.</i>总监级购房优惠
-                </span>
+                <span> <i>1.</i>特价房申请 </span>
+                <span> <i>2.</i>总监级购房优惠 </span>
               </p>
             </div>
           </div>
-          <button @click="showbtn(87,'免费咨询')">免费咨询</button>
+          <button @click="showbtn(87, '免费咨询')">免费咨询</button>
         </div>
       </div>
       <div class="line"></div>
@@ -397,7 +393,7 @@
             <div id="leiecharts"></div>
             <p>
               综合评分：
-              <span>{{mm}}</span>
+              <span>{{ mm }}</span>
             </p>
           </div>
           <table>
@@ -405,47 +401,49 @@
               <tr>
                 <td>
                   休闲
-                  <span>{{scores.leisure}}</span>
+                  <span>{{ scores.leisure }}</span>
                 </td>
                 <td>
                   户型
-                  <span>{{scores.house_types}}</span>
+                  <span>{{ scores.house_types }}</span>
                 </td>
               </tr>
               <tr>
                 <td>
                   层高
-                  <span>{{scores.height}}</span>
+                  <span>{{ scores.height }}</span>
                 </td>
                 <td>
                   商业
-                  <span>{{scores.business}}</span>
+                  <span>{{ scores.business }}</span>
                 </td>
               </tr>
               <tr>
                 <td>
                   交通
-                  <span>{{scores.traffic}}</span>
+                  <span>{{ scores.traffic }}</span>
                 </td>
                 <td>
                   医疗
-                  <span>{{scores.medical}}</span>
+                  <span>{{ scores.medical }}</span>
                 </td>
               </tr>
               <tr>
                 <td>
                   教育
-                  <span>{{scores.education}}</span>
+                  <span>{{ scores.education }}</span>
                 </td>
                 <td>
                   品质
-                  <span>{{scores.quality}}</span>
+                  <span>{{ scores.quality }}</span>
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
-        <button @click="showbtn(88,'获取详细分析报告')">获取详细分析报告</button>
+        <button @click="showbtn(88, '获取详细分析报告')">
+          获取详细分析报告
+        </button>
       </div>
       <div class="line"></div>
       <div class="zhou">
@@ -457,7 +455,7 @@
           </span>-->
         </h3>
         <div id="map"></div>
-        <div id="panel" style="display:none"></div>
+        <div id="panel" style="display: none"></div>
         <div class="map-icon">
           <span @click="setmap('交通')">
             <img src="../assets/affic.png" />交通
@@ -489,69 +487,79 @@
           <li>
             <p>
               户型：
-              <span>{{basic.appartment}}</span>
+              <span>{{ basic.appartment }}</span>
             </p>
             <p>
               类型：
-              <span>{{basic.type}}</span>
+              <span>{{ basic.type }}</span>
             </p>
           </li>
           <li>
             <p>
               开盘：
-              <span>{{basic.opentime}}</span>
+              <span>{{ basic.opentime }}</span>
             </p>
             <p>
               交房：
-              <span>{{basic.givetime}}</span>
+              <span>{{ basic.givetime }}</span>
             </p>
           </li>
           <li>
             <p>
               层高：
-              <span>{{basic.height}}米</span>
+              <span>{{ basic.height }}米</span>
             </p>
             <p>
               产权：
-              <span>{{basic.year}}年</span>
+              <span>{{ basic.year }}年</span>
             </p>
           </li>
           <li>
             <p>
               装修：
-              <span>{{basic.decorate}}</span>
+              <span>{{ basic.decorate }}</span>
             </p>
             <p>
               车位：
-              <span>{{basic.parking}}</span>
+              <span>{{ basic.parking }}</span>
             </p>
           </li>
         </ul>
         <p class="msg-address">
           地址：
-          <span>{{basic.address}}</span>
+          <span>{{ basic.address }}</span>
         </p>
-        <button @click="showbtn(89,'获取详细楼盘资料')">获取详细楼盘资料</button>
+        <button @click="showbtn(89, '获取详细楼盘资料')">
+          获取详细楼盘资料
+        </button>
       </div>
       <div class="line"></div>
       <div class="other">
         <h3>看了该楼盘的还看了</h3>
-        <div class="pro" v-for="(item,key) in recommands" :key="key">
-          <router-link :to="'/index/'+item.id">
+        <div class="pro" v-for="(item, key) in recommands" :key="key">
+          <router-link :to="'/index/' + item.id">
             <img :src="item.img" alt />
             <div class="pro-msg">
               <h5>
-                {{item.name}}
-                <span>{{item.status}}</span>
+                {{ item.name }}
+                <span>{{ item.status }}</span>
               </h5>
               <p class="pro-price">
-                <span>{{item.single_price}}</span>
+                <span>{{ item.single_price }}</span>
                 <i>元/m²</i>起
               </p>
-              <p class="attr">住宅 | {{item.city}}-{{item.country.substr(0,2)}} | {{item.area}}m²</p>
+              <p class="attr">
+                住宅 | {{ item.city }}-{{ item.country.substr(0, 2) }} |
+                {{ item.area }}m²
+              </p>
               <p class="pro-icon">
-                <span class="pro-icon-zhuang">{{item.decorate}}</span>
-                <span class="pro-icon-type" v-for="(item,key) in item.features" :key="key">{{item}}</span>
+                <span class="pro-icon-zhuang">{{ item.decorate }}</span>
+                <span
+                  class="pro-icon-type"
+                  v-for="(item, key) in item.features"
+                  :key="key"
+                  >{{ item }}</span
+                >
               </p>
             </div>
           </router-link>
@@ -561,19 +569,17 @@
     <div class="bomnav">
       <div class="nav-left" @click="gotalk">
         <img src="../assets/ke_h.png" alt />
-        <span v-if="wsshow">{{wsnum}}</span>
+        <span v-if="wsshow">{{ wsnum }}</span>
         <p>在线咨询</p>
       </div>
-      <a :href="'tel:'+phone">
-        <button class="b1">
-          <img src="../assets/navtel.png" />免费咨询
-        </button>
+      <a :href="'tel:' + phone">
+        <button class="b1"><img src="../assets/navtel.png" />免费咨询</button>
       </a>
-      <button class="b2" @click="showbtn(42,'预约看房')">
+      <button class="b2" @click="showbtn(42, '预约看房')">
         <img src="../assets/icon.png" />预约看房
       </button>
     </div>
-    <a :href="'tel:'+phone">
+    <a :href="'tel:' + phone">
       <div class="righttel">
         <img src="../assets/righttel.png" alt />
         免费拨打
@@ -582,10 +588,10 @@
     <div class="topnav" v-if="navtype">
       <img src="../assets/goback.png" @click="home" />
       <ul>
-        <li :class="topnum == 0 ?'active':''" @click="goto(0)">户型</li>
-        <li :class="topnum == 1 ?'active':''" @click="goto(1)">动态</li>
-        <li :class="topnum == 2 ?'active':''" @click="goto(2)">分析</li>
-        <li :class="topnum == 3 ?'active':''" @click="goto(3)">详情</li>
+        <li :class="topnum == 0 ? 'active' : ''" @click="goto(0)">户型</li>
+        <li :class="topnum == 1 ? 'active' : ''" @click="goto(1)">动态</li>
+        <li :class="topnum == 2 ? 'active' : ''" @click="goto(2)">分析</li>
+        <li :class="topnum == 3 ? 'active' : ''" @click="goto(3)">详情</li>
       </ul>
     </div>
     <div class="imgbox" @click="srctype = false" v-show="srctype">
@@ -600,13 +606,25 @@
         </div>
         <div class="t-bottom">
           <div class="t-b-first">
-            <input class="l-p" type="tel" placeholder="输入预约手机号码" v-model="baoming" />
+            <input
+              class="l-p"
+              type="tel"
+              placeholder="输入预约手机号码"
+              v-model="baoming"
+            />
             <p class="w-mg">
-              <input class="w-mg-c" type="checkbox" checked v-model="check" />我已阅读并同意
+              <input
+                class="w-mg-c"
+                type="checkbox"
+                checked
+                v-model="check"
+              />我已阅读并同意
               <a href="javasript:;">《家园新房用户协议》</a>
             </p>
             <p class="tishi">请勾选用户协议</p>
-            <button class="t-b-btn t-b-btn2 bg_01" id="dingxue" @click="getmsg">立即订阅</button>
+            <button class="t-b-btn t-b-btn2 bg_01" id="dingxue" @click="getmsg">
+              立即订阅
+            </button>
             <p class="w-tit">有专属咨询师为您提供专业的购房意见和1v1服务</p>
           </div>
           <div class="t-b-second">
@@ -614,7 +632,12 @@
               验证码已发送到
               <span id="ytel">187****4376</span>，请注意查看
             </p>
-            <input type="text" placeholder="请输入验证码" id="ma-ll" v-model="yanz" />
+            <input
+              type="text"
+              placeholder="请输入验证码"
+              id="ma-ll"
+              v-model="yanz"
+            />
             <button class="port1" @click="yan">确定</button>
             <input type="hidden" id="building_name" value />
             <input type="hidden" value />
@@ -637,15 +660,23 @@
           <h4>活动规则</h4>
           <img @click="huomsg = false" src="../assets/w-del.png" alt />
           <div>
-            <p>1、本次团购活动以分档累计补发的方案执行，通过家园网站成交该项目具体团购费用如下所示：</p>
+            <p>
+              1、本次团购活动以分档累计补发的方案执行，通过家园网站成交该项目具体团购费用如下所示：
+            </p>
             <p>0-5套---------每套1000元</p>
             <p>6-10套--------每套2000元</p>
             <p>11-15套-------每套3000元</p>
             <p>16-20套-------每套4000元</p>
             <p>21套以上------每套5000元</p>
-            <p>2、结算时间：网签成功后次月20号发放。补发费用待该范围内的最后一套网签成功后次月20号发放</p>
-            <p>3、核算方式：由开发商或代理公司判定为家园平台客户即可享受这个优惠</p>
-            <p>4、结算方式：提供已实名的支付宝账户给与您对接的家园咨询师，规定时间内会将优惠费用打至该账户</p>
+            <p>
+              2、结算时间：网签成功后次月20号发放。补发费用待该范围内的最后一套网签成功后次月20号发放
+            </p>
+            <p>
+              3、核算方式：由开发商或代理公司判定为家园平台客户即可享受这个优惠
+            </p>
+            <p>
+              4、结算方式：提供已实名的支付宝账户给与您对接的家园咨询师，规定时间内会将优惠费用打至该账户
+            </p>
             <p>
               详细活动方案请致电家园客服电话：
               <span>400-966-9995</span> 注：活动最终解释权归家园所有
@@ -658,7 +689,12 @@
     <div class="pingbox" v-show="shouping" @click="shouping = false"></div>
     <transition name="change">
       <div class="shouping" v-show="shouping">
-        <img class="esc" @click="shouping = false" src="../assets/pingesc.png" alt />
+        <img
+          class="esc"
+          @click="shouping = false"
+          src="../assets/pingesc.png"
+          alt
+        />
         <img class="img" src="../assets/shouping.png" alt />
         <input type="text" placeholder="请输入您手机号" v-model="baoming" />
         <button @click="shou">领取优惠</button>
@@ -668,11 +704,11 @@
           作人员与您联系，此优惠不与参团优惠叠加使用
         </p>
         <p class="zhu">注：活动最终解释权归允家所有</p>
-        <span v-show="warningbtn">{{warning}}</span>
+        <span v-show="warningbtn">{{ warning }}</span>
       </div>
     </transition>
     <transition name="change">
-      <div class="huimg" v-if="huimgtype" @click="huimgtype=false">
+      <div class="huimg" v-if="huimgtype" @click="huimgtype = false">
         <img :src="huimg" alt />
       </div>
     </transition>
@@ -686,19 +722,35 @@
           <p>一键预约看房免费小车上门接送，可带家人一起参观多个热门楼盘</p>
           <img id="w-esc" src="../assets/w-del.png" alt @click="closeall" />
           <div class="btn" @click="showPicker = true">
-            <span>{{homemsg}}</span>
+            <span>{{ homemsg }}</span>
             <img src="../assets/j-more.png" alt />
           </div>
         </div>
         <div class="t-bottom">
           <div class="t-b-first">
-            <input class="l-p" type="tel" placeholder="输入手机号码" v-model="baoming" />
+            <input
+              class="l-p"
+              type="tel"
+              placeholder="输入手机号码"
+              v-model="baoming"
+            />
             <p class="w-mg">
-              <input class="w-mg-c" type="checkbox" checked v-model="check" />我已阅读并同意
+              <input
+                class="w-mg-c"
+                type="checkbox"
+                checked
+                v-model="check"
+              />我已阅读并同意
               <a href="javasript:;">《家园新房用户协议》</a>
             </p>
             <p class="tishi">请勾选用户协议</p>
-            <button class="t-b-btn t-b-btn2 bg_01" id="dingxue" @click="getmsgs">立即订阅</button>
+            <button
+              class="t-b-btn t-b-btn2 bg_01"
+              id="dingxue"
+              @click="getmsgs"
+            >
+              立即订阅
+            </button>
             <p class="w-tit">有专属咨询师为您提供专业的购房意见和1v1服务</p>
           </div>
           <div class="t-b-second">
@@ -706,7 +758,12 @@
               验证码已发送到
               <span id="ytel">187****4376</span>，请注意查看
             </p>
-            <input type="text" placeholder="请输入验证码" id="ma-ll" v-model="yanz" />
+            <input
+              type="text"
+              placeholder="请输入验证码"
+              id="ma-ll"
+              v-model="yanz"
+            />
             <button class="port1" @click="yan">确定</button>
             <input type="hidden" id="building_name" value />
             <input type="hidden" value />
@@ -878,7 +935,7 @@ export default {
     drawline() {
       // 初始化图表标签
       //下面这是vue中使用
-      var myChart = this.$echarts.init(document.getElementById("chart"));
+      var myChart = echarts.init(document.getElementById("chart"));
       let that = this;
       var options = {
         //定义一个标题
@@ -942,7 +999,7 @@ export default {
           },
         ],
       };
-      console.log(that.prices)
+      console.log(that.prices);
       myChart.setOption(options);
     },
     drawlei() {
@@ -1040,7 +1097,7 @@ export default {
           },
         ],
       };
-      var myChart = this.$echarts.init(document.getElementById("leiecharts"));
+      var myChart = echarts.init(document.getElementById("leiecharts"));
       myChart.setOption(option);
     },
     mmap() {
@@ -1616,8 +1673,9 @@ export default {
         });
     },
     gotalk() {
+      let url = window.location.href;
       window.location.href =
-        "http://www.jy1980.com:9191/hangzhou/talk?reconnect=" + this.url;
+        "http://m.jy8006.com/hangzhou/talk?reconnect=" + this.url;
     },
     close2() {
       this.wss = false;
@@ -1906,10 +1964,39 @@ export default {
       this.ws.send(JSON.stringify(options));
     },
     home() {
-      if (window.location.host.indexOf("edefang") != -1) {
-        window.location.href = `http://sem.edefang.net:90/`;
+      if (localStorage.getItem("uuid")) {
+        let uuid = localStorage.getItem("uuid");
+        if (sessionStorage.getItem("kid")) {
+          let other = sessionStorage.getItem("other");
+          let kid = sessionStorage.getItem("kid");
+          if (window.location.host.indexOf("edefang") != -1) {
+            window.location.href = `http://m.jy1980.com?kid=${kid}&other=${other}&uuid=${uuid}`;
+          } else {
+            window.location.href = `http://m.jy1980.com?kid=${kid}&other=${other}&uuid=${uuid}`;
+          }
+        } else {
+          if (window.location.host.indexOf("edefang") != -1) {
+            window.location.href = `http://m.jy1980.com?uuid=${uuid}`;
+          } else {
+            window.location.href = `http://m.jy1980.com?uuid=${uuid}`;
+          }
+        }
       } else {
-        window.location.href = `https://www.jy1980.com/`;
+        if (sessionStorage.getItem("kid")) {
+          let other = sessionStorage.getItem("other");
+          let kid = sessionStorage.getItem("kid");
+          if (window.location.host.indexOf("edefang") != -1) {
+            window.location.href = `http://m.jy1980.com/?kid=${kid}&other=${other}`;
+          } else {
+            window.location.href = `http://m.jy1980.com/?kid=${kid}&other=${other}`;
+          }
+        } else {
+          if (window.location.host.indexOf("edefang") != -1) {
+            window.location.href = `http://m.jy1980.com/`;
+          } else {
+            window.location.href = `http://m.jy1980.com/`;
+          }
+        }
       }
     },
     look(src) {
@@ -2013,6 +2100,20 @@ export default {
   },
   mounted() {
     let that = this;
+    if (!localStorage.getItem("uuid")) {
+      var timestamp = Date.parse(new Date());
+      var $chars =
+        "ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678"; /****默认去掉了容易混淆的字符oOLl,9gq,Vv,Uu,I1****/
+      var maxPos = $chars.length;
+      var pwd = "";
+      let i = 0;
+      for (i = 0; i < 12; i++) {
+        pwd += $chars.charAt(Math.floor(Math.random() * maxPos));
+      }
+      timestamp = pwd + timestamp;
+      localStorage.setItem("uuid", timestamp);
+      this.$store.dispatch("setuuid", timestamp);
+    }
     // if (!sessionStorage.getItem(that.basic.id)) {
     //   setTimeout(() => {
     //     this.shouping = true;
@@ -2075,8 +2176,10 @@ export default {
         autoplay: true,
       });
       that.mmap();
-      that.drawline();
-      this.drawlei();
+      this.$nextTick(() => {
+        this.drawlei();
+        this.drawline();
+      });
       $(window).scroll(function () {
         var scrollTop =
           document.documentElement.scrollTop || document.body.scrollTop;
