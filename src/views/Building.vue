@@ -929,6 +929,7 @@ export default {
       huimgtype: false,
       huinum: 10,
       huinum1: 11,
+      city:1
     };
   },
   methods: {
@@ -1537,11 +1538,14 @@ export default {
           this.ip = res.data.common.client_ip;
           let url = window.location.href;
           let newurl = url.split("?")[0];
+          let uuid = this.$route.query.uuid
           let name = this.basic.name;
-          newurl += `?proid=${id}&name=${name}`;
+          let city = this.city
+          newurl += `?proid=${id}&uuid=${uuid}&city=${city}`;
           newurl = encodeURIComponent(newurl);
           this.url = newurl;
           this.humsgs = res.data.data.basic.house_types;
+          this.city = res.data.data.basic.pid
           this.topimgs = res.data.data.basic.imgs;
           this.scores = res.data.scores;
           let m = 0;
@@ -1673,9 +1677,15 @@ export default {
         });
     },
     gotalk() {
-      let url = window.location.href;
+      let url = window.location.href+'&id='+this.$route.params.id;
       window.location.href =
-        "http://m.jy8006.com/hangzhou/talk?reconnect=" + this.url;
+        "http://localhost:3000/hangzhou/talk?reconnect=" + this.url;
+      // window.location.href =
+      //   "http://testim.jy1980.com/hangzhou/talk?reconnect=" + this.url;
+      // console.log("http://localhost:3000/hangzhou/talk?reconnect=" + this.url)
+      // return
+      // window.location.href =
+      //   "http://m.jy8006.com/hangzhou/talk?reconnect=" + this.url;
     },
     close2() {
       this.wss = false;
