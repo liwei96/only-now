@@ -1678,10 +1678,10 @@ export default {
     },
     gotalk() {
       let url = window.location.href+'&id='+this.$route.params.id;
-      window.location.href =
-        "http://localhost:3000/hangzhou/talk?reconnect=" + this.url;
       // window.location.href =
-      //   "http://testim.jy1980.com/hangzhou/talk?reconnect=" + this.url;
+      //   "http://localhost:3000/hangzhou/talk?reconnect=" + this.url;
+      window.location.href =
+        "http://testim.jy1980.com/hangzhou/talk?reconnect=" + this.url;
       // console.log("http://localhost:3000/hangzhou/talk?reconnect=" + this.url)
       // return
       // window.location.href =
