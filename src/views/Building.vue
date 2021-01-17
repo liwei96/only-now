@@ -1,8 +1,9 @@
 <template>
-  <div class="build" v-wechat-title="'家园新房'">
+  <div class="build" v-wechat-title="host">
     <header>
       <img class="back" src="../assets/goback.png" alt @click="home" />
-      <img class="logo" src="../assets/logo.png" alt @click="home" />
+      <img class="logo" src="../assets/logo.png" alt @click="home" v-if="host == '易得房'"/>
+      <img class="logo" src="../assets/logo2.png" alt @click="home"  v-if="host == '家园'"/>
       <img class="home" src="../assets/home.png" alt @click="home" />
     </header>
     <div class="topimg">
@@ -238,7 +239,7 @@
               <span>5000</span>元购房优惠
               <i>（{{ endline }}截止）</i>
             </h6>
-            <p>售楼处专供家园平台客户</p>
+            <p>售楼处专供{{host}}平台客户</p>
           </div>
           <div class="hui-right">
             <button @click="showbtn(37, '领取优惠')">领取优惠</button>
@@ -387,7 +388,7 @@
             <img src="../assets/ques.png" alt /> 评分规则
           </span>
         </h3>
-        <p>家园通过多个角度对比（10分制）进行楼盘专业评分</p>
+        <p>{{host}}通过多个角度对比（10分制）进行楼盘专业评分</p>
         <div class="lei-con">
           <div class="left">
             <div id="leiecharts"></div>
@@ -537,7 +538,7 @@
       <div class="other">
         <h3>看了该楼盘的还看了</h3>
         <div class="pro" v-for="(item, key) in recommands" :key="key">
-          <router-link :to="'/index/' + item.id">
+          <router-link :to="'/index/' + item.id+'?other='+other">
             <img :src="item.img" alt />
             <div class="pro-msg">
               <h5>
@@ -619,7 +620,7 @@
                 checked
                 v-model="check"
               />我已阅读并同意
-              <a href="javasript:;">《家园新房用户协议》</a>
+              <a href="javasript:;">《{{host}}新房用户协议》</a>
             </p>
             <p class="tishi">请勾选用户协议</p>
             <button class="t-b-btn t-b-btn2 bg_01" id="dingxue" @click="getmsg">
@@ -661,7 +662,7 @@
           <img @click="huomsg = false" src="../assets/w-del.png" alt />
           <div>
             <p>
-              1、本次团购活动以分档累计补发的方案执行，通过家园网站成交该项目具体团购费用如下所示：
+              1、本次团购活动以分档累计补发的方案执行，通过{{host}}网站成交该项目具体团购费用如下所示：
             </p>
             <p>0-5套---------每套1000元</p>
             <p>6-10套--------每套2000元</p>
@@ -672,14 +673,14 @@
               2、结算时间：网签成功后次月20号发放。补发费用待该范围内的最后一套网签成功后次月20号发放
             </p>
             <p>
-              3、核算方式：由开发商或代理公司判定为家园平台客户即可享受这个优惠
+              3、核算方式：由开发商或代理公司判定为{{host}}平台客户即可享受这个优惠
             </p>
             <p>
-              4、结算方式：提供已实名的支付宝账户给与您对接的家园咨询师，规定时间内会将优惠费用打至该账户
+              4、结算方式：提供已实名的支付宝账户给与您对接的{{host}}咨询师，规定时间内会将优惠费用打至该账户
             </p>
             <p>
-              详细活动方案请致电家园客服电话：
-              <span>400-966-9995</span> 注：活动最终解释权归家园所有
+              详细活动方案请致电{{host}}客服电话：
+              <span>400-966-9995</span> 注：活动最终解释权归{{host}}所有
             </p>
           </div>
         </div>
@@ -741,7 +742,7 @@
                 checked
                 v-model="check"
               />我已阅读并同意
-              <a href="javasript:;">《家园新房用户协议》</a>
+              <a href="javasript:;">《{{host}}新房用户协议》</a>
             </p>
             <p class="tishi">请勾选用户协议</p>
             <button
@@ -789,6 +790,7 @@ import { get, msg, verification, top_sure } from "../api/api";
 export default {
   data() {
     return {
+      other: '',
       navtype: false,
       topnum: 0,
       tetype: false,
@@ -929,7 +931,8 @@ export default {
       huimgtype: false,
       huinum: 10,
       huinum1: 11,
-      city:1
+      city:1,
+      host:'易得房'
     };
   },
   methods: {
@@ -1235,8 +1238,7 @@ export default {
             $("#ytel").html(tel);
             window._agl && window._agl.push(["track", ["success", { t: 3 }]]);
           } else {
-            $(".l-p").val("");
-            $(".l-p").attr("placeholder", "报名失败");
+            this.$toast("请不要重复报名");
           }
         })
         .catch((error) => {
@@ -1314,8 +1316,7 @@ export default {
             $("#ytel").html(tel);
             window._agl && window._agl.push(["track", ["success", { t: 3 }]]);
           } else {
-            $(".l-p").val("");
-            $(".l-p").attr("placeholder", "报名失败");
+            this.$toast("请不要重复报名");
           }
         })
         .catch((error) => {
@@ -1476,7 +1477,8 @@ export default {
         sessionStorage.setItem("kid", kid);
         sessionStorage.setItem("other", other);
       }
-      let other = this.$route.query.other;
+      let other = sessionStorage.getItem('other');
+      this.other = other
       if (id != 785) {
         await get(id, other).then((res) => {
           this.all = res.data;
@@ -1679,9 +1681,15 @@ export default {
     gotalk() {
       let url = window.location.href+'&id='+this.$route.params.id;
       // window.location.href =
-      //   "http://localhost:3000/hangzhou/talk?reconnect=" + this.url;
-      window.location.href =
-        "http://testim.jy1980.com/hangzhou/talk?reconnect=" + this.url;
+      //   "http://testim.jy1980.com/hangzhou/talk?reconnect=" + this.url+'&uuid='+this.$route.query.uuid;
+      if(this.host == '易得房') {
+        window.location.href =
+        "http://mobile.edefang.net/hangzhou/talk?reconnect=" + this.url+'&uuid='+this.$route.query.uuid+'&proid='+this.$route.params.id;
+      }else {
+        window.location.href =
+        "http://m.jy1980.com/hangzhou/talk?reconnect=" + this.url+'&uuid='+this.$route.query.uuid+'&proid='+this.$route.params.id;
+      }
+      
       // console.log("http://localhost:3000/hangzhou/talk?reconnect=" + this.url)
       // return
       // window.location.href =
@@ -1974,21 +1982,23 @@ export default {
       this.ws.send(JSON.stringify(options));
     },
     home() {
-      if (localStorage.getItem("uuid")) {
+      let city = this.basic.pin
+      if(this.host == '易得房') {
+        if (localStorage.getItem("uuid")) {
         let uuid = localStorage.getItem("uuid");
         if (sessionStorage.getItem("kid")) {
           let other = sessionStorage.getItem("other");
           let kid = sessionStorage.getItem("kid");
           if (window.location.host.indexOf("edefang") != -1) {
-            window.location.href = `http://m.jy1980.com?kid=${kid}&other=${other}&uuid=${uuid}`;
+            window.location.href = `http://mobile.edefang.net/${city}?kid=${kid}&other=${other}&uuid=${uuid}`;
           } else {
-            window.location.href = `http://m.jy1980.com?kid=${kid}&other=${other}&uuid=${uuid}`;
+            window.location.href = `http://mobile.edefang.net/${city}?kid=${kid}&other=${other}&uuid=${uuid}`;
           }
         } else {
           if (window.location.host.indexOf("edefang") != -1) {
-            window.location.href = `http://m.jy1980.com?uuid=${uuid}`;
+            window.location.href = `http://mobile.edefang.net/${city}?uuid=${uuid}`;
           } else {
-            window.location.href = `http://m.jy1980.com?uuid=${uuid}`;
+            window.location.href = `http://mobile.edefang.net/${city}?uuid=${uuid}`;
           }
         }
       } else {
@@ -1996,18 +2006,56 @@ export default {
           let other = sessionStorage.getItem("other");
           let kid = sessionStorage.getItem("kid");
           if (window.location.host.indexOf("edefang") != -1) {
-            window.location.href = `http://m.jy1980.com/?kid=${kid}&other=${other}`;
+            window.location.href = `http://mobile.edefang.net/${city}?kid=${kid}&other=${other}`;
           } else {
-            window.location.href = `http://m.jy1980.com/?kid=${kid}&other=${other}`;
+            window.location.href = `http://mobile.edefang.net/${city}?kid=${kid}&other=${other}`;
           }
         } else {
           if (window.location.host.indexOf("edefang") != -1) {
-            window.location.href = `http://m.jy1980.com/`;
+            window.location.href = `http://mobile.edefang.net/${city}`;
           } else {
-            window.location.href = `http://m.jy1980.com/`;
+            window.location.href = `http://mobile.edefang.net/${city}`;
           }
         }
       }
+      }else {
+        if (localStorage.getItem("uuid")) {
+        let uuid = localStorage.getItem("uuid");
+        if (sessionStorage.getItem("kid")) {
+          let other = sessionStorage.getItem("other");
+          let kid = sessionStorage.getItem("kid");
+          if (window.location.host.indexOf("edefang") != -1) {
+            window.location.href = `http://m.jy1980.com/${city}?kid=${kid}&other=${other}&uuid=${uuid}`;
+          } else {
+            window.location.href = `http://m.jy1980.com/${city}?kid=${kid}&other=${other}&uuid=${uuid}`;
+          }
+        } else {
+          if (window.location.host.indexOf("edefang") != -1) {
+            window.location.href = `http://m.jy1980.com/${city}?uuid=${uuid}`;
+          } else {
+            window.location.href = `http://m.jy1980.com/${city}?uuid=${uuid}`;
+          }
+        }
+      } else {
+        
+        if (sessionStorage.getItem("kid")) {
+          let other = sessionStorage.getItem("other");
+          let kid = sessionStorage.getItem("kid");
+          if (window.location.host.indexOf("edefang") != -1) {
+            window.location.href = `http://m.jy1980.com/${city}?kid=${kid}&other=${other}`;
+          } else {
+            window.location.href = `http://m.jy1980.com/${city}?kid=${kid}&other=${other}`;
+          }
+        } else {
+          if (window.location.host.indexOf("edefang") != -1) {
+            window.location.href = `http://m.jy1980.com/${city}`;
+          } else {
+            window.location.href = `http://m.jy1980.com/${city}`;
+          }
+        }
+      }
+      }
+      
     },
     look(src) {
       this.src = src;
@@ -2109,6 +2157,11 @@ export default {
     this.start();
   },
   mounted() {
+    if(window.location.href.indexOf('jy1980.com') != -1) {
+      this.host = '家园'
+    } else {
+      this.host = '易得房'
+    }
     let that = this;
     if (!localStorage.getItem("uuid")) {
       var timestamp = Date.parse(new Date());
